@@ -1,0 +1,23 @@
+{
+    "info": {
+        "_postman_id": "AI_CHAT_BACKEND",
+        "name": "AI Chat Backend",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Chat with AI",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"message\": \"Xin chào AI!\"\n}"
+                },
+                "url": {"raw": "http://127.0.0.1:8000/chat/"}
+            }
+        }
+    ]
+}

@@ -1,196 +1,169 @@
 
----
+# 🚀 AI Full-stack Chat App
 
-````markdown
-# 🤖 AI Full-stack Chat App
+A **lightweight and secure** full-stack AI chat system designed for data interaction, built with **FastAPI** (backend) and **Streamlit** (frontend).
 
-A lightweight full-stack AI chat system built with **FastAPI + Streamlit**, supporting:
-- 🗨️ Multi-turn chat with persistent history  
-- 🖼️ Chat about uploaded images (with PII masking)  
-- 📊 Chat about uploaded or URL-based CSV datasets  
-- 🔒 Automatic PII detection, masking, and audit logging  
+This application goes beyond basic chat by supporting advanced features like **PII detection and masking** across both images and CSV datasets.
 
 ---
 
-## 🧱 Features
+## ✨ Key Features
 
-### 💬 1. Core Chat
-- Multi-turn conversation between User and Assistant  
-- Markdown rendering supported  
-- Chat history persisted in `app/data/memory.json`  
-- Timestamps for each turn  
-
-### 🖼️ 2. Image Chat
-- Upload an image (PNG/JPG)  
-- Preview displayed in chat  
-- Automatic **PII masking (email, phone, name)**  
-- Result saved in `SelfRAG/dataset/uploads/`  
-- Audit logged to `data/pii_audit.json`
-
-### 📊 3. CSV Data Chat
-- Accepts CSV via:
-  - File upload  
-  - Raw GitHub CSV URL  
-- Supports questions like:
-  - “Summarize the dataset”
-  - “Show missing values”
-  - “Which column has the most missing values?”
-  - “Plot histogram of price”
-- Displays inline results (text, tables, or simple plots)
-- Automatically **detects & masks PII** in CSV files  
-- Logs PII actions to `data/pii_audit.json`
+* 🗨️ **Core Chat:** Multi-turn conversation with persistent history.
+* 🖼️ **Image Chat:** Chat about uploaded images, including automatic **PII masking**.
+* 📊 **CSV Data Chat:** Interact with uploaded or URL-based CSV datasets to get summaries, missing value analysis, and plots.
+* 🔒 **Security-First:** Automatic **PII detection, masking, and detailed audit logging** for all sensitive operations.
 
 ---
 
-## 🧩 4. PII Handling System
+## 🛠️ Detailed Capabilities
 
-### ✅ PII Types Detected
+### 1. Core Chat
+
+* Multi-turn conversation between User and Assistant.
+* Chat history is persistently saved to `app/data/memory.json`.
+* Includes timestamps for each turn and supports **Markdown rendering**.
+
+### 2. Image Chat
+
+* **Upload** PNG/JPG images.
+* Automatic **PII masking** (emails, phone numbers, and names) is applied.
+* PII audit logs are saved to `data/pii_audit.json`.
+* The masked result is stored in `SelfRAG/dataset/uploads/`.
+
+### 3. CSV Data Chat
+
+The app processes CSV data from **file uploads** or a **Raw GitHub CSV URL**.
+
+It supports natural language questions for data analysis, such as:
+* "Summarize the dataset"
+* "Show missing values"
+* "Which column has the most missing values?"
+* "Plot histogram of price"
+
+Results are displayed **inline** as text, tables, or simple plots. The system also automatically **detects and masks PII** in the CSV data, logging all actions to `data/pii_audit.json`.
+
+---
+
+## 🛡️ PII Handling System
+
+This system uses regex patterns for reliable detection and supports automatic masking for auditability.
+
+### PII Types Detected
+
 | Type | Regex Pattern |
-|------|----------------|
+| :--- | :--- |
 | Phone | `\b\d{3}[-.]?\d{3}[-.]?\d{4}\b` |
 | Email | `[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}` |
 | Name | `([A-Z][a-z]+ [A-Z][a-z]+)` |
 
-### 🧠 Audit Log Example (`data/pii_audit.json`)
+### Audit Log Example (`data/pii_audit.json`)
+
 ```json
 {
   "time": "13:03 22/10/25",
   "action": "mask_csv",
   "details": ["phone", "email", "name"]
 }
-````
+## ⚙️ Tech Stack
 
-### 💾 Chat Memory Example (`data/memory.json`)
+### Backend
+- Python + FastAPI – High-performance API server
 
-```json
-{
-  "user": "Summarize the dataset",
-  "bot": "Dataset có 1565 hàng và 7 cột.",
-  "time": "12:53 22/10/25"
-}
+### Frontend
+- Streamlit – Interactive web UI
+
+### AI / ML Utilities
+- PyTorch, CLIP – For future Self-RAG image/caption embeddings
+
+### OCR
+- Tesseract (`pytesseract`) – Extracts text from images for PII detection
+
+### Data Handling
+- Pandas, Matplotlib – CSV parsing, numeric stats, plotting
+
+### Persistence
+- JSON (memory.json, pii_audit.json) – Chat history & audit logs
+
 ```
 
----
+### 2\. Install dependencies
 
-## 🚀 Run Locally
+You can choose between a minimal or a full set of dependencies:
 
-### 1️⃣ Clone the repo
+  * **Minimal (for running the demo):**
+    ```bash
+    pip install -r requirements.txt
+    ```
+  * **Full (all dependencies used in development):**
+    ```bash
+    pip install -r requirements_full.txt
+    ```
 
-```bash
-git clone https://github.com/<your-username>/AI-Fullstack-Chat.git
-cd AI-Fullstack-Chat
-```
-
-### 2️⃣ Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3️⃣ Run backend (FastAPI)
+### 3\. Run the backend (FastAPI)
 
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
 
-### 4️⃣ Run frontend (Streamlit)
+### 4\. Run the frontend (Streamlit)
 
 ```bash
 streamlit run app_frontend.py
 ```
 
-App runs at:
-👉 [http://localhost:8501](http://localhost:8501)
-Backend API at:
-👉 [http://localhost:8000](http://localhost:8000)
+The application will be accessible at:
 
----
+  * **Frontend App:** [http://localhost:8501](https://www.google.com/search?q=http://localhost:8501)
+  * **Backend API:** [http://localhost:8000](https://www.google.com/search?q=http://localhost:8000)
+
+-----
 
 ## 📁 Project Structure
 
+This structure separates the core application logic, utility functions, and persistent data storage.
+
 ```
 app/
-├── main.py
-├── routes/
-│   ├── chat.py
-│   ├── upload_csv.py
-│   ├── upload_image.py
-│   └── memory_viewer.py
-├── utils/
-│   ├── csv_utils.py
-│   ├── image_utils.py
-│   ├── llm_client.py
-│   └── pii_utils.py
-│
-├── data/
-│   ├── memory.json
-│   ├── pii_audit.json
-│   ├── pii_audit_summary.json
-│   └── temp_*.csv
-│
-├── SelfRAG/
-│   └── dataset/
-│       └── uploads/
-│
-├── app_frontend.py
-├── requirements.txt
-└── README.md
+├── main.py             # FastAPI entry point
+├── routes/             # API endpoints for chat, CSV, image upload
+├── utils/              # Helper functions (CSV, image, LLM client, PII)
+├── data/               # Persistent storage (memory.json, pii_audit.json)
+├── SelfRAG/            # Directory for SelfRAG components (future use)
+├── app_frontend.py     # Streamlit entry point
+└── requirements.txt
 ```
 
----
+-----
 
-## 🖼️ Screenshots
+## 💡 Future Enhancements
 
-🎥 [Watch Full Demo Video](https://drive.google.com/file/d/1L9SSGkkwUqwXr8TanTxr-5YBmCmxSThD/view?usp=sharing)
+  * **Advanced Retrieval:** Integrate **CLIP + Self-RAG** for smarter image/caption retrieval.
+  * **Contextual Summarization:** Add **LLM summarization** for complex CSV or image context.
+  * **Deployment:** Set up live deployment to platforms like **Render** or **Hugging Face Spaces**.
 
-### 💬 Chat Demo
+-----
 
-![Chat Demo](./screenshots/chat_demo.png)
+## 🖼️ Screenshots & Demo
 
-### 📊 CSV Upload + Masking
+Watch a full demonstration of the app's capabilities:
 
-![CSV Demo](./screenshots/csv_demo.png)
+🎥 [**Watch Full Demo Video**](https://drive.google.com/file/d/1L9SSGkkwUqwXr8TanTxr-5YBmCmxSThD/view?usp=sharing)
 
-### 🖼️ Image PII Masking
+*(Include your screenshots here: CSV Upload + Masking, Image PII Masking, PII Audit Log)*
 
-![Image Masking](./screenshots/image_masking.png)
+-----
 
-### 🔒 PII Audit Log
-
-![PII Audit Log](./screenshots/pii_audit_log.png)
-
----
-
-## 🧠 Tech Stack
-
-| Layer         | Technology                                 |
-| ------------- | ------------------------------------------ |
-| Backend       | FastAPI, Python                            |
-| Frontend      | Streamlit                                  |
-| AI Utils      | PyTorch + CLIP (for next Self-RAG upgrade) |
-| OCR           | Tesseract via `pytesseract`                |
-| Data Handling | Pandas, Matplotlib                         |
-| Persistence   | JSON-based memory & audit logging          |
-
----
-
-## 💡 Future Upgrades
-
-* Integrate **CLIP + Self-RAG** for smart image/caption retrieval
-* Add **LLM summarization** for CSV or image context
-* Deploy to Render / Hugging Face Spaces
-
----
-
-## 🧾 Author
+## ✍️ Author
 
 **A A**
 AI Developer & Research Intern Candidate
-📅 Submission Date: *October 23, 2025*
-🚀 Built with ❤️ for the AI Full-stack Internship Assignment
+*Submission Date: October 23, 2025*
+Built with ❤️ for the AI Full-stack Internship Assignment
 
-## 🧾 Installation Options
-You can install either:
-- `requirements.txt` → minimal dependencies (for running demo)
-- `requirements_full.txt` → all dependencies used during development
+```
 
+This version is more polished, uses a professional tone, and effectively highlights the app's unique selling points, especially the **PII handling** and the **full-stack architecture**.
+
+What part of the app's functionality would you like to explore next? For example, the PII masking implementation or the CSV data querying?
+```

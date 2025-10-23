@@ -65,6 +65,8 @@ This system uses regex patterns for reliable detection and supports automatic ma
   "action": "mask_csv",
   "details": ["phone", "email", "name"]
 }
+
+```
 ## ⚙️ Tech Stack
 
 ### Backend
@@ -83,10 +85,14 @@ This system uses regex patterns for reliable detection and supports automatic ma
 - Pandas, Matplotlib – CSV parsing, numeric stats, plotting
 
 ### Persistence
-- JSON (memory.json, pii_audit.json) – Chat history & audit logs
+- JSON (`memory.json`, `pii_audit.json`) – Chat history & audit logs
+- 
 
-```
+#🚀 Get Started (Run Locally)
 
+### 1\. Clone repository
+git clone https://github.com/Boothill2001/ai-fullstack-chat-app.git
+cd ai-fullstack-chat-app
 ### 2\. Install dependencies
 
 You can choose between a minimal or a full set of dependencies:
@@ -154,6 +160,27 @@ Watch a full demonstration of the app's capabilities:
 
 -----
 
+## ⚙️ Tech Stack
+
+### Backend
+- Python + FastAPI – High-performance API server
+
+### Frontend
+- Streamlit – Interactive web UI
+
+### AI / ML Utilities
+- PyTorch, CLIP – For future Self-RAG image/caption embeddings
+
+### OCR
+- Tesseract (`pytesseract`) – Extracts text from images for PII detection
+
+### Data Handling
+- Pandas, Matplotlib – CSV parsing, numeric stats, plotting
+
+### Persistence
+- JSON (`memory.json`, `pii_audit.json`) – Chat history & audit logs
+
+---
 ## ✍️ Author
 
 **A A**
@@ -161,9 +188,4 @@ AI Developer & Research Intern Candidate
 *Submission Date: October 23, 2025*
 Built with ❤️ for the AI Full-stack Internship Assignment
 
-```
-
-This version is more polished, uses a professional tone, and effectively highlights the app's unique selling points, especially the **PII handling** and the **full-stack architecture**.
-
-What part of the app's functionality would you like to explore next? For example, the PII masking implementation or the CSV data querying?
 ```
